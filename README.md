@@ -47,3 +47,4 @@ If you are deploying to Heroku, set ``` HEROKU_URL ``` as the url of your app!
 * Without stoping the server, open another terminal window and run ```rake jobs:work``` (needed in order for ActionMailer to work and deliver emails)
 * Visit http://localhost:3000
 * Use ```demo@demo.com```  ```change_me``` for the email and password. Change the password and email once you login. Create more users via the Console.
+# stockmanagement

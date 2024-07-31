@@ -1,9 +1,15 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for :users
   resources :orders
-  resources :members
+  resources :members do
+    collection { post :import }
+  end
   resources :users
-  resources :items
+  resources :items do
+    collection { post :import }
+  end
 
   root 'orders#index'
   get 'renew/:id' => 'orders#renew'

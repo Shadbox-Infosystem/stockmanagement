@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_order, only: %i[show edit update destroy]
 
   def index
     @orders = Order.all
@@ -18,11 +20,11 @@ class OrdersController < ApplicationController
     @order = Order.find_by_id(params[:id])
     Order.renew(params[:id])
     redirect_to :root
-    flash[:notice] = "Renewed for 7 days from now. Enjoy!"
+    flash[:notice] = 'Renewed for 7 days from now. Enjoy!'
 
     begin
       OrderMailer.delay.renew_order(@order, @current_user).deliver
-    rescue Exception => e
+    rescue Exception
     end
   end
 
@@ -34,11 +36,11 @@ class OrdersController < ApplicationController
     @order = Order.find_by_id(params[:id])
     Order.disable(params[:id])
     redirect_to :root
-    flash[:notice] = "Item marked as returned. Thank you!"
+    flash[:notice] = 'Item marked as returned. Thank you!'
 
     begin
       OrderMailer.delay.return_order(@order, @current_user).deliver
-    rescue Exception => e
+    rescue Exception
     end
   end
 
@@ -58,14 +60,14 @@ class OrdersController < ApplicationController
         redirect_to :root, notice: 'Order was successfully created.'
         begin
           OrderMailer.delay.create_order(@order, @current_user).deliver
-        rescue Exception => e
+        rescue Exception
         end
       else
         render :new
       end
     else
       flash[:alert] = 'The quantity you entered is not currently available'
-      redirect_to :back
+      redirect_to request.referer || root_path
     end
   end
 
@@ -79,16 +81,17 @@ class OrdersController < ApplicationController
     redirect_to orders_url, notice: 'Order was successfully destroyed.'
     begin
       OrderMailer.delay.cancel_order(@order, @current_user).deliver
-    rescue Exception => e
+    rescue Exception
     end
   end
 
   private
-    def set_order
-      @order = Order.find(params[:id])
-    end
 
-    def order_params
-      params.require(:order).permit(:quantity, :expire_at, :status, :item_id, :member_id)
-    end
+  def set_order
+    @order = Order.find(params[:id])
+  end
+
+  def order_params
+    params.require(:order).permit(:quantity, :expire_at, :status, :item_id, :member_id)
+  end
 end

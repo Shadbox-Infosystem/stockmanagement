@@ -1,91 +1,104 @@
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
     <%= render 'layouts/header' %>
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
           Add Item
         </h1>
         <ol class="breadcrumb">
-          <li>
-            <a href="#">
-              <i class="fa fa-home"></i>
-              Home Page</a>
-          </li>
+          <li><a href="#"><i class="fa fa-home"></i> Home Page</a></li>
           <li class="active">Add Item</li>
         </ol>
       </section>
 
-      <!-- Main content -->
       <section class="content">
         <div class="row">
-          <!-- left column -->
+          <!-- Left column: Basic Information -->
           <div class="col-md-6">
-            <!-- general form elements -->
+            <!-- Basic Information Form -->
             <div class="box box-header">
               <div class="box-header with-border">
                 <h3 class="box-title">Basic Information</h3>
               </div>
-              <!-- /.box-header -->
-              <!-- form start -->
               <%= form_for @item do |f| %>
-              <% if @item.errors.any? %>
-              <div id="error_explanation">
-                <h2><%= pluralize(@item.errors.count, "error") %>
-                  prohibited this item from being saved:</h2>
-                <ul>
-                  <% @item.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
-                  <% end %>
-                </ul>
-              </div>
-              <% end %>
-              <div class="box-body">
-                <div class="form-group">
-                  <label>Name</label>
-                  <%= f.text_field :name, class: "form-control", placeholder: "Enter Name", required: true  %>
+                <% if @item.errors.any? %>
+                  <div id="error_explanation">
+                    <h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
+                    <ul>
+                      <% @item.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+                <div class="box-body">
+                  <div class="form-group">
+                    <label>Name</label>
+                    <%= f.text_field :name, class: "form-control", placeholder: "Enter Name", required: true  %>
+                  </div>
+                  <div class="form-group">
+                    <label>Description</label>
+                    <%= f.text_area :description, class: "form-control", rows: "3", placeholder: "Enter Description" %>
+                  </div>
+                  <div class="form-group">
+                    <label>Quantity</label>
+                    <%= f.number_field :quantity, class: "form-control", placeholder: "Enter Quantity", required: true  %>
+                  </div>
+                  <div class="form-group">
+                    <label>Category</label>
+                    <%= f.select(:category, [["Books","Books"], ["Magazines","Magazines"], ["Electronics","Electronics"], ["Hardware","Hardware"], ["Tools","Tools"]], {}, { :class => 'form-control' }) %>
+                  </div>
+                  <div class="form-group">
+                    <label>Purchased On</label>
+                    <%= f.date_field :purchased_on, class: "form-control", placeholder: "Enter Purchase Date" %>
+                  </div>
+                  <div class="form-group">
+                    <label>Purchased Price</label>
+                    <%= f.number_field :purchased_price, class: "form-control", placeholder: "Enter Purchase Price", step: 0.01 %>
+                  </div>
+                  <div class="form-group">
+                    <label>Serial Number</label>
+                    <%= f.text_field :serial_number, class: "form-control", placeholder: "Enter Serial Number" %>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label>Description</label>
-                  <%= f.text_area :description, class: "form-control", rows: "3", laceholder: "Enter Description"%>
+                <div class="box-footer">
+                  <%= f.submit "Submit", class: "btn btn-primary" %>
                 </div>
-                <div class="form-group">
-                  <label>Quantity</label>
-                  <%= f.number_field :quantity, class: "form-control", placeholder: "Enter Quantity", required: true  %>
-                </div>
-                <div class="form-group">
-                  <label>Category</label>
-                  <%= f.select(:category, [["Books","Books"], ["Magazines","Magazines"], ["Electronics","Electronics"], ["Hardware","Hardware"], ["Tools","Tools"]], {}, { :class => 'form-control' })%>
-                </div>
-              </div>
-              <!-- /.box-body -->
-              <div class="box-footer">
-                <%= f.submit "Submit", class: "btn btn-primary"%>
-              </div>
               <% end %>
             </div>
-            <!-- /.box -->
           </div>
-          <!--/.col (right) -->
+
+          <!-- Right column: Upload Form -->
+          <div class="col-md-6">
+            <!-- Form for uploading an XLSX file -->
+            <div class="box box-header">
+              <div class="box-header with-border">
+                <h3 class="box-title">Upload File</h3>
+              </div>
+              <%= form_tag import_items_path, multipart: true do %>
+                <div class="box-body">
+                  <div class="form-group">
+                    <%= file_field_tag :file, class: "form-control", required: true %>
+                  </div>
+                  <div class="box-footer">
+                    <%= submit_tag "Upload", class: "btn btn-primary" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
         </div>
-        <!-- /.row -->
       </section>
-      <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
     <footer class="main-footer">
       <div class="pull-right hidden-xs">
-        <b>Version</b>
-        0.1
+        <b>Version</b> 0.1
       </div>
-      Content available under
-      <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0</a>.
+      Content available under <a href="https://shadbox.com/">Shadbox Infosystem Pvt Ltd.</a>.
     </footer>
-    <!-- ./wrapper -->
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-      $.widget.bridge('uibutton', $.ui.button);
-    </script>
-  </body>
+  </div>
+  <script>
+    $.widget.bridge('uibutton', $.ui.button);
+  </script>
+</body>

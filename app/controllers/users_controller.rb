@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_action :set_user
 
@@ -5,8 +7,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
@@ -26,11 +27,12 @@ class UsersController < ApplicationController
   end
 
   private
-    def set_user
-      @user = User.find_by_id(current_user)
-    end
 
-    def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
-    end
+  def set_user
+    @user = User.find_by_id(current_user)
+  end
+
+  def user_params
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+  end
 end
